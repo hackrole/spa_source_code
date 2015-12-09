@@ -90,7 +90,7 @@ spa.shell = (function(){
     if(!anchor_map_previous || _s_chat_previous !== _s_chat_proposed){
       s_chat_proposed = anchor_map_proposed.chat;
       switch(s_chat_proposed){
-        case 'open':
+        case 'opened':
           is_ok = spa.chat.setSliderPosition('opened');
           break;
         case 'closed':

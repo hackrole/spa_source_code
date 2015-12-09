@@ -107,7 +107,7 @@ spa.chat = (function(){
         height_px = stateMap.slider_opened_px;
         animate_time = configMap.slider_open_time;
         slider_title = configMap.slider_opened_title;
-        toggle_title = '=';
+        toggle_text = '=';
         break;
       case 'hidden':
         height_px = 0;
@@ -116,7 +116,7 @@ spa.chat = (function(){
         toggle_text = '+';
         break;
       case 'closed':
-        height_px = stateMap.slider_close_time;
+        height_px = stateMap.slider_closed_px;
         animate_time = configMap.slider_close_time;
         slider_title = configMap.slider_closed_title;
         toggle_text = '+';
