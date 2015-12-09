@@ -7,7 +7,7 @@ spa.shell = (function(){
 
   var configMap = {
     anchor_schema_map: {
-      chat: { open: true, closed: true }
+      chat: { opened: true, closed: true }
     },
     main_html: String() +
       + '<div class="spa-shell-head">'
@@ -20,7 +20,6 @@ spa.shell = (function(){
         + '<div class="spa-shell-main-content"></div>'
       + '</div>'
       + '<div class="spa-shell-foot"></div>'
-      + '<div class="spa-shell-chat"></div>'
       + '<div class="spa-shell-modal"></div>',
 
     chat_extend_time: 1000,
@@ -32,14 +31,12 @@ spa.shell = (function(){
   };
 
   var stateMap = {
-    $container: null,
     anchor_map: {},
-    is_chat_retracted: true,
   };
 
   var jqueryMap = {};
 
-  var copyAnchorMap, setJqueryMap, toggleChat, changeAnchorPart, onHashchange, onClickChat, initModule;
+  var copyAnchorMap, setJqueryMap, changeAnchorPart, onHashchange, onClickChat, initModule;
 
   copyAnchorMap = function(){
     return $.extend(true, {}, stateMap.anchor_map);
@@ -93,59 +90,38 @@ spa.shell = (function(){
       s_chat_proposed = anchor_map_proposed.chat;
       switch(s_chat_proposed){
         case 'open':
-          toggleChat(true);
+          is_ok = spa.chat.setSliderPosition('opened');
           break;
         case 'closed':
-          toggleChat(false);
+          is_ok = spa.chat.setSliderPosition('closed');
           break;
         default:
-          toggleChat(false);
+          spa.chat.setSliderPosition('closed');
           delete anchro_map_proposed.chat;
           $.uriAnchor.setAnchor(anchor_map_proposed, null, true);
       }
     }
+    if(!is_ok){
+      if(anchor_map_previous){
+        $.uriAnchor.setAnchor(anchor_map_previous, null, true);
+        stateMap.anchor_map = anchor_map_previous;
+      }else{
+        delete anchor_map_proposed.chat;
+        $.uriAnchor.setAnchor(anchor_map_proposed, null, true);
+      }
+    }
     return false;
+  }
+
+  setChatAnchor = function(position_type){
+    return changeAnchorPart({chat: position_type});
   }
 
   setJqueryMap = function(){
     var $container = stateMap.$container;
     jqueryMap = {
       $container: $container,
-      $chat: $container.find('.spa-shell-chat'),
     };
-  };
-  toggleChat = function(do_extend, callback){
-    var px_chat_ht, is_open, is_closed, is_sliding;
-    px_chat_ht = jqueryMap.$chat.height();
-    is_open = px_chat_ht === configMap.chat_extend_height;
-    is_closed = px_chat_ht === configMap.chat_retract_height;
-    is_sliding = !is_open && !is_closed;
-    if(is_sliding){
-      return false;
-    }
-    if(do_extend){
-      jqueryMap.$chat.animate(
-        {height: configMap.chat_extend_height},
-        configMap.chat_extend_time,
-        function(){
-          jqueryMap.$chat.attr('title', configMap.chat_extended_title);
-          stateMap.is_chat_retracted = false;
-          if(callback){ callback(jqueryMap.$chat); }
-        }
-      );
-      return true;
-    }
-
-    jqueryMap.$chat.animate(
-      {height: configMap.chat_retract_height},
-      configMap.chat_retract_time,
-      function(){
-        jqueryMap.$chat.attr('title', configMap.chat_retracted_title);
-        stateMap.is_chat_retracted = true;
-        if(callback){callback(jqueryMap.$chat);}
-      }
-    );
-    return true;
   };
 
   onClickChat = function(event){
@@ -161,17 +137,17 @@ spa.shell = (function(){
     $container.html(configMap.main_html);
     setJqueryMap();
 
-    // inital chat slider and bind event
-    stateMap.is_chat_retracted = true;
-    jqueryMap.$chat.attr('title', configMap.chat_retracted_title).click(onClickChat);
-
     // config uriAnchor to use our schema
     $.uriAnchor.configModule({
       schema_map: configMap.anchor_schema_map
     });
-    // configure and initialze feature modules
-    spa.chat.configModule({});
-    spa.chat.initModule(jqueryMap.$chat);
+
+    spa.chat.configModule({
+      set_chat_anchor: setChatAnchor,
+      chat_model: spa.model.chat,
+      people_model: spa.model.people,
+    });
+    spa.chat.initModule(jqueryMap.$container);
 
     $(window).bind('hashchange', onHashchange).trigger('hashchange');
   };
