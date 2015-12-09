@@ -73,6 +73,7 @@ spa.shell = (function(){
 
   onHashchange = function(event){
     var anchor_map_previous, anchor_map_proposed, _s_chat_previous, _s_chat_proposed, s_chat_proposed;
+    var is_ok = true;
     anchor_map_previous = copyAnchorMap();
 
     try{
@@ -97,7 +98,7 @@ spa.shell = (function(){
           break;
         default:
           spa.chat.setSliderPosition('closed');
-          delete anchro_map_proposed.chat;
+          delete anchor_map_proposed.chat;
           $.uriAnchor.setAnchor(anchor_map_proposed, null, true);
       }
     }

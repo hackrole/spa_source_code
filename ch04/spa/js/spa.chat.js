@@ -95,14 +95,14 @@ spa.chat = (function(){
     });
   }
 
-  setSliderPosition = function(postion_type, callback){
+  setSliderPosition = function(position_type, callback){
     var height_px, animate_time, slider_title, toggle_text;
 
     if(stateMap.position_type === position_type){
       return true;
     }
 
-    switch(postion_type){
+    switch(position_type){
       case 'opened':
         height_px = stateMap.slider_opened_px;
         animate_time = configMap.slider_open_time;
