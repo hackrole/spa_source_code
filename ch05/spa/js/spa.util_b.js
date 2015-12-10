@@ -57,5 +57,5 @@ spa.util_b = (function(){
     decodeHtml: decodeHtml,
     encodeHtml: encodeHtml,
     getEmSize: getEmSize,
-  }
-}()):
+  };
+}());
