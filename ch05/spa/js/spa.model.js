@@ -46,7 +46,7 @@ spa.model = (function(){
     }
   };
 
-  completeLogin = function(){
+  completeLogin = function(user_list){
     var user_map = user_list[0];
     delete stateMap.people_cid_map[user_map.cid];
     stateMap.user.cid = user_map._id;
@@ -81,7 +81,7 @@ spa.model = (function(){
     return person;
   };
 
-  removePerson = function(){
+  removePerson = function(person){
     if(!person){
       return false;
     }
