@@ -43,11 +43,11 @@ spa.model = (function(){
     stateMap.people_cid_map = {};
     if(user){
       stateMap.people_db.insert(user);
-      staeMap.people_cid_map[user.cid] = user;
+      stateMap.people_cid_map[user.cid] = user;
     }
   };
 
-  completeLogin = function(){
+  completeLogin = function(user_list){
     var user_map = user_list[0];
     delete stateMap.people_cid_map[user_map.cid];
     stateMap.user.cid = user_map._id;
@@ -152,7 +152,7 @@ spa.model = (function(){
     _update_list = function(arg_list){
         var i, person_map, make_person_map, people_list;
         people_list = arg_list[0];
-        is_chatee_online = false;
+        var is_chatee_online = false;
 
         clearPeopleDb();
 
@@ -162,7 +162,7 @@ spa.model = (function(){
             if(!person_map.name){
                 continue PERSON;
             }
-            if(stateMap.user && stateMap.usr.id === person_map._id){
+            if(stateMap.user && stateMap.user.id === person_map._id){
                 stateMap.user.css_map = person_map.css_map;
                 continue  PERSON;
             }
