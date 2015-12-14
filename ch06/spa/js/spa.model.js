@@ -125,11 +125,12 @@ spa.model = (function(){
       });
     };
     logout = function(){
-      var is_removed, user = stateMap.user;
+      var user = stateMap.user;
 
       chat._leave();
       var is_removed = removePerson(user);
       stateMap.user = stateMap.anon_user;
+      clearPeopleDb();
 
       $.gevent.publish('spa-logout', [user]);
       return is_removed;
@@ -147,10 +148,10 @@ spa.model = (function(){
   chat = (function(){
     var _publish_listchange, _publish_updatechat,
     _update_list, _leave_chat, get_chatee, join_chat,
-    send_msg, set_chatee, chatee = null;
+    send_msg, set_chatee, update_avater, chatee = null;
 
     _update_list = function(arg_list){
-        var i, person_map, make_person_map, people_list;
+        var i, person_map, make_person_map, people_list, person;
         people_list = arg_list[0];
         var is_chatee_online = false;
 
@@ -173,8 +174,10 @@ spa.model = (function(){
                 id: person_map._id,
                 name: person_map.name,
             };
+            person = makePerson(make_person_map);
             if(chatee && chatee.id === make_person_map.id){
                 is_chatee_online = true;
+                chatee = person;
             }
             makePerson(make_person_map);
         }
@@ -267,7 +270,14 @@ spa.model = (function(){
         );
         chatee = new_chatee;
         return true;
-    }
+    };
+
+      update_avater = function(avater_update_map){
+        var sio = isFakeData ? spa.fake.mockSio : spa.data.getSio();
+        if(sio){
+            sio.emit('updateavater', avater_update_map);
+        }
+      };
 
     return {
         _leavel: _leave_chat,
@@ -275,8 +285,10 @@ spa.model = (function(){
         join: join_chat,
         send_msg: send_msg,
         set_chatee: set_chatee,
+        update_avater: update_avater,
     };
   }());
+
 
   initModule = function(){
     stateMap.anon_user = makePerson({
