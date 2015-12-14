@@ -42,7 +42,7 @@ spa.shell = (function(){
   var jqueryMap = {};
 
   var copyAnchorMap, setJqueryMap, changeAnchorPart, onHashchange, initModule;
-  var onTapAcct, onLogin, onLogout;
+  var onTapAcct, onLogin, onLogout, onResize, setChatAnchor;
 
   copyAnchorMap = function(){
     return $.extend(true, {}, stateMap.anchor_map);
@@ -130,11 +130,11 @@ spa.shell = (function(){
       }
     }
     return false;
-  }
+  };
 
   setChatAnchor = function(position_type){
     return changeAnchorPart({chat: position_type});
-  }
+  };
 
   setJqueryMap = function(){
     var $container = stateMap.$container;
