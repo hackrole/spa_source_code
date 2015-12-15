@@ -19,7 +19,7 @@ spa.avtr = (function(){
     drag_bg_color: undefined,
   };
   var jqueryMap = {};
-  var getRandRgb, setJqueryMap, updateAvater, onTapNav, onHeldstartNav,
+  var getRandRgb, setJqueryMap, updateAvater, onTapNav, onHeldstartNav;
   var onHeldmoveNav, onHeldendNav;
   var onSetchatee, onListchange, onLogout, configModule, initModule;
 
@@ -40,7 +40,7 @@ spa.avtr = (function(){
     css_map = {
       top: parseInt($target.css('top'), 10),
       left: parseInt($target.css('left'), 10),
-      'background-color': $target.css('background-color');
+      'background-color': $target.css('background-color'),
     };
     person_id = $target.attr('data-id');
 
@@ -104,7 +104,7 @@ spa.avtr = (function(){
     updateAvatar($drag_target);
   };
 
-  onSetChatee = function(event, arg_map){
+  onSetchatee = function(event, arg_map){
     var $nav, new_chatee, old_chatee;
     $nav = $(this);
     new_chatee = arg_map.new_chatee;
@@ -169,7 +169,7 @@ spa.avtr = (function(){
 
     $container.bind('utap', onTapNav)
       .bind('uheldstart', onHeldstartNav)
-      .bind('uheldmove', onHeldMoveNav)
+      .bind('uheldmove', onHeldmoveNav)
       .bind('uhelend', onHeldendNav);
 
     return true;
