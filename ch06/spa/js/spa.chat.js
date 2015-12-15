@@ -72,7 +72,7 @@ spa.chat = (function(){
   var jqueryMap = {};
   var setJqueryMap, setPxSizes, setSliderPosition, onClickToggle, configModule, initModule;
   var removeSlider, handleResize, scrollChat, writeChat, writeAlert, clearChat;
-  var onTapToggle, onSubmitMsg, OnTapList, OnSetchatee, onUpdatechat, onListchange;
+  var onTapToggle, onSubmitMsg, onTapList, onSetChatee, onUpdatechat, onListchange;
   var onLogin, onLogout;
 
   setJqueryMap = function(){
@@ -92,7 +92,7 @@ spa.chat = (function(){
       $input: $slider.find('.spa-chat-input-in input[type=text]'),
       $send: $slider.find('.spa-chat-msg-send'),
       $form: $slider.find('.spa-chat-msg-form'),
-      $widow: $(window),
+      $window: $(window),
     };
   };
 
@@ -130,7 +130,7 @@ spa.chat = (function(){
     var height_px, animate_time, slider_title, toggle_text;
 
     if(position_type === 'opened'
-        && configMap.people_model.get_user().get_is_anon(){
+        && configMap.people_model.get_user().get_is_anon()){
         return false;
     }
 
@@ -365,9 +365,9 @@ spa.chat = (function(){
 
     jqueryMap.$toggle.prop('title', configMap.slider_closed_title);
     stateMap.position_type = 'closed';
-    
+
     $list_box = jqueryMap.$list_box;
-    $.gevnet.subscribe($list_box, 'spa-listchange', onListchange);
+    $.gevent.subscribe($list_box, 'spa-listchange', onListchange);
     $.gevent.subscribe($list_box, 'spa-setchatee', onSetChatee);
     $.gevent.subscribe($list_box, 'spa-updatechat', onUpdatechat);
     $.gevent.subscribe($list_box, 'spa-login', onLogin);
